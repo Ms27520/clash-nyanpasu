@@ -47,7 +47,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04 # 需要手动升级到 24.04
+    runs-on: self-hosted # 需要手动升级到 24.04
 
     steps:
       - name: Checkout repository
@@ -88,7 +88,7 @@ jobs:
         with:
           workspaces: "./backend/"
           prefix-key: "rust-stable"
-          key: ubuntu-latest
+          key: self-hosted
           shared-key: "release"
 
       - name: Install Node latest
