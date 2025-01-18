@@ -159,10 +159,14 @@ pub async fn enhance() -> (Mapping, Vec<String>, PostProcessingOutput) {
 }
 
 fn use_cache(mut config: Mapping) -> Mapping {
-    if !config.contains_key("profile") {
+    let key = serde_yaml::Value::from("profile");
+    if config.contains_key(&key) {
+        tracing::debug!("Don't detect profile, set default profile for memorized profile");
         let mut profile = Mapping::new();
         profile.insert("store-selected".into(), true.into());
-        profile.insert("store-fake-ip".into(), true.into());
+        // Disable fake-ip store, due to the slow speed.
+        // each dns query should indirect to the file io, which is very very slow.
+        profile.insert("store-fake-ip".into(), false.into());
         config.insert("profile".into(), profile.into());
     }
     config
